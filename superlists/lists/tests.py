@@ -1,11 +1,14 @@
+from django.urls import resolve
 from django.test import TestCase
+from lists.views import home_page
 
 
 # Create your tests here.
 
-class SmokeTest(TestCase):
-    """тест на токсичность"""
+class HomePageTest(TestCase):
+    """тест домашней страницы"""
 
-    def test_bad_maths(self):
-        """тест: неправильные математические расчеты"""
-        self.assertEqual(1 + 1, 3)
+    def test_root_url_resolves_to_homepage_view(self):
+        """тест: корневой url преобразуется в представление домашней страницы"""
+        found = resolve('/')
+        self.assertEqual(found.func, home_page)
