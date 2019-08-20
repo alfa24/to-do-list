@@ -7,4 +7,4 @@ from django.shortcuts import render
 
 def home_page(request):
     """домашняя страница"""
-    return HttpResponse('<html><title>To-DO lists</title></html>')
+    return render(request, 'home.html')
