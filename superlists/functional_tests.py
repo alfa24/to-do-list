@@ -23,7 +23,7 @@ class NewVisitorTest(unittest.TestCase):
         # неотложных дел
         self.assertIn('To-DO', self.browser.title)
         header_text = self.browser.find_element_by_tag_name('h1').text
-        self.assertIn('To-DO', header_text)
+        self.assertIn('Your to-do list', header_text)
 
         # Ей сразу же предлагается ввести элемент списка
         inputbox = self.browser.find_element_by_id('id_new_item')
@@ -41,9 +41,10 @@ class NewVisitorTest(unittest.TestCase):
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
 
-        self.assertTrue(any(row.text == '1: Купить павлиньи перья') for row in rows)
-
-
+        self.assertTrue(
+            any(row.text == '1: Купить павлиньи перья' for row in rows),
+            'новый элемент списка не появился в таблице'
+        )
 
         # Текстовое поле по-прежнему приглашает ее добавить еще один элемент.
         # Она вводит "Сделать мушку из павлиньих перьев"
