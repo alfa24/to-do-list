@@ -5,4 +5,4 @@ from django.db import models
 
 class Item(models.Model):
     """Элемент списка"""
-    pass
+    text = models.TextField(verbose_name='Текст', default='', blank=True)
