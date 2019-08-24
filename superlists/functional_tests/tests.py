@@ -1,12 +1,13 @@
 import time
 
+from django.test import LiveServerTestCase
 from selenium import webdriver
 import unittest
 
 from selenium.webdriver.common.keys import Keys
 
 
-class NewVisitorTest(unittest.TestCase):
+class NewVisitorTest(LiveServerTestCase):
     def setUp(self) -> None:
         self.browser = webdriver.Chrome()
 
@@ -23,7 +24,7 @@ class NewVisitorTest(unittest.TestCase):
 
         # Эдит слышала про крутое новое онлайн-приложение со списком
         # неотложных дел. Она решает оценить его домашнюю страницу
-        self.browser.get('http://localhost:8000')
+        self.browser.get(self.live_server_url)
         # Она видит, что заголовок и шапка страницы говорят о списках
         # неотложных дел
         self.assertIn('To-DO', self.browser.title)
@@ -61,7 +62,3 @@ class NewVisitorTest(unittest.TestCase):
         # Она посещает этот URL-адрес – ее список по-прежнему там.
         # Удовлетворенная, она снова ложится спать
         self.fail('Закончить тест!')
-
-
-if __name__ == "__main__":
-    unittest.main(warnings='ignore')
