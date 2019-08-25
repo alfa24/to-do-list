@@ -68,7 +68,6 @@ class NewVisitorTest(LiveServerTestCase):
         self.wait_for_row_in_list_table('2: Сделать мушку из павлиньих перьев')
 
         # Удовлетворенная, она снова ложится спать
-        self.fail('Закончить тест!')
 
     def test_multiplie_users_can_start_lists_at_different_urls(self):
         """тест: разные пользователи могут начать списки с разными урл"""
