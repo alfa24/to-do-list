@@ -5,3 +5,4 @@ geckodriver.log
 __pycashe__
 *.pyc
 todo.txt
+/static/
