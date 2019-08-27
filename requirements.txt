@@ -1,2 +1,3 @@
+fabric3
 django==1.11.3
 gunicorn

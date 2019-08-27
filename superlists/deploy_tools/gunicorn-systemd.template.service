@@ -3,9 +3,9 @@ Description=Gunicorn server for SITENAME
 
 [Service]
 Restart=on-failure
-User=user
-WorkingDirectory=/home/user/sites/SITENAME/source/superlists
-ExecStart=/home/user/sites/SITENAME/virtualenv/bin/gunicorn \
+User=USERNAME
+WorkingDirectory=/home/USERNAME/sites/SITENAME/source/superlists
+ExecStart=/home/USERNAME/sites/SITENAME/virtualenv/bin/gunicorn \
 --bind unix:/tmp/SITENAME.socket \
 superlists.wsgi:application
 
