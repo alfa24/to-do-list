@@ -23,7 +23,7 @@ def view_list(request, list_id):
             item = Item(text=request.POST['item_text'], list=list_)
             item.full_clean()
             item.save()
-            return redirect(f'/lists/{list_.id}/')
+            return redirect(list_)
         except ValidationError as e:
             error = 'Элементы списка не должны быть пустыми'
     return render(request, 'list.html', {'list': list_, 'error': error})
@@ -41,4 +41,4 @@ def new_list(request):
         error = 'Элементы списка не должны быть пустыми'
         return render(request, 'home.html', {'error': error})
 
-    return redirect(f'/lists/{list_.id}/')
+    return redirect(list_)
