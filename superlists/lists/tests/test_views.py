@@ -49,14 +49,14 @@ class ListViewTest(TestCase):
 
     def test_can_save_a_POST_request(self):
         """тест: сохранить пост запрос"""
-        self.client.post('/lists/new', data={'item_text': "A new list item"})
+        self.client.post('/lists/new', data={'text': "A new list item"})
         self.assertEqual(Item.objects.count(), 1)
         new_item = Item.objects.first()
         self.assertEqual(new_item.text, "A new list item")
 
     def test_redirects_after_POST(self):
         """тест: редирект после пост запроса"""
-        response = self.client.post('/lists/new', data={'item_text': "A new list item"})
+        response = self.client.post('/lists/new', data={'text': "A new list item"})
         list_ = List.objects.first()
         self.assertRedirects(response, f'/lists/{list_.id}/')
 
@@ -77,7 +77,7 @@ class ListViewTest(TestCase):
 
         response = self.client.post(
             f'/lists/{correct_list.id}/',
-            data={'item_text': 'Новая запись в существующем списке'}
+            data={'text': 'Новая запись в существующем списке'}
         )
 
         self.assertRedirects(response, f'/lists/{correct_list.id}/')
@@ -90,7 +90,7 @@ class ListViewTest(TestCase):
 
         self.client.post(
             f'/lists/{correct_list.id}/',
-            data={'item_text': 'Новая запись в существующем списке'}
+            data={'text': 'Новая запись в существующем списке'}
         )
 
         self.assertEqual(Item.objects.count(), 1)
@@ -104,7 +104,7 @@ class ListViewTest(TestCase):
         list_ = List.objects.create()
         response = self.client.post(
             f'/lists/{list_.id}/',
-            data={'item_text': ''}
+            data={'text': ''}
         )
 
         self.assertEqual(response.status_code, 200)
@@ -120,7 +120,7 @@ class NewListTest(TestCase):
         """тест: ошибки валидации отсылаются назад в шаблон
         домашней страницы"""
 
-        response = self.client.post('/lists/new', data={'item_text': ''})
+        response = self.client.post('/lists/new', data={'text': ''})
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'home.html')
         expected_error = escape('Элементы списка не должны быть пустыми')
@@ -129,6 +129,6 @@ class NewListTest(TestCase):
     def test_invalid_list_items_arent_saved(self):
         """тест: сохраняются недопустимые элементы списка"""
 
-        self.client.post('/lists/new', data={'item_text': ''})
+        self.client.post('/lists/new', data={'text': ''})
         self.assertEqual(List.objects.count(), 0)
         self.assertEqual(Item.objects.count(), 0)

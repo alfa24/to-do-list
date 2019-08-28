@@ -35,7 +35,7 @@ class FunctionalTest(StaticLiveServerTestCase):
                 time.sleep(0.5)
 
     def wait_for(self, fn):
-        '''ожидать'''
+        """ожидать"""
 
         start_time = time.time()
         while True:
@@ -45,3 +45,8 @@ class FunctionalTest(StaticLiveServerTestCase):
                 if time.time() - start_time > MAX_WAIT:
                     raise e
                 time.sleep(0.5)
+
+    def get_item_input_box(self):
+        """получить поле вводя для элемента"""
+
+        return self.browser.find_element_by_id('id_text')
