@@ -8,6 +8,10 @@ EMPTY_ITEM_ERROR = 'Элементы списка не должны быть п�
 class ItemForm(forms.ModelForm):
     """форма для эелемента списка"""
 
+    def save(self, for_list, commit=True):
+        self.instance.list = for_list
+        return super().save(commit)
+
     class Meta:
         model = Item
         fields = ('text',)
