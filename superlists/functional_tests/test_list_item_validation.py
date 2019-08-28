@@ -31,6 +31,7 @@ class ItemValidationTest(FunctionalTest):
 
         # Как ни странно, Эдит решает отправить второй пустой элемент списка
         # Она получает аналогичное предупреждение на странице списка
+        self.browser.find_element_by_id('id_new_item').send_keys(Keys.ENTER)
         self.wait_for(lambda: self.assertEqual(
             self.browser.find_element_by_css_selector('.has-error').text,
             "Элементы списка не должны быть пустыми"
