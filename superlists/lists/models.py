@@ -10,5 +10,5 @@ class List(models.Model):
 
 class Item(models.Model):
     """Элемент списка"""
-    text = models.TextField(verbose_name='Текст', default='', blank=True)
+    text = models.TextField(verbose_name='Текст')
     list = models.ForeignKey(List, default=None)

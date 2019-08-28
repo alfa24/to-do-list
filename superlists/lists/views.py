@@ -1,9 +1,12 @@
+from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 # Create your views here.
 from lists.models import Item, List
 
+
+# todo удалить хардкод в url
 
 def home_page(request):
     """домашняя страница"""
@@ -19,7 +22,16 @@ def view_list(request, list_id):
 
 def new_list(request):
     list_ = List.objects.create()
-    Item.objects.create(text=request.POST['item_text'], list=list_)
+    item = Item(text=request.POST['item_text'], list=list_)
+
+    try:
+        item.full_clean()
+        item.save()
+    except ValidationError as e:
+        list_.delete()
+        error = 'Элементы списка не должны быть пустыми'
+        return render(request, 'home.html', {'error': error})
+
     return redirect(f'/lists/{list_.id}/')
 
 
