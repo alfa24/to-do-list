@@ -7,8 +7,6 @@ from lists.forms import ItemForm
 from lists.models import Item, List
 
 
-# todo удалить хардкод в url
-
 def home_page(request):
     """домашняя страница"""
 
