@@ -13,5 +13,12 @@ class List(models.Model):
 
 class Item(models.Model):
     """Элемент списка"""
-    text = models.TextField(verbose_name='Текст')
+    text = models.TextField(verbose_name='Текст', default='')
     list = models.ForeignKey(List, default=None)
+
+    def __str__(self):
+        return self.text
+
+    class Meta:
+        ordering = ('id', )
+        unique_together = ('text', 'list')
