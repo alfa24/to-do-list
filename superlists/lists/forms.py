@@ -29,7 +29,7 @@ class ItemForm(forms.ModelForm):
         }
 
 
-class ExistingListItemForm(forms.ModelForm):
+class ExistingListItemForm(ItemForm):
     """форма для эелемента существующего списка"""
 
     def __init__(self, data=None, files=None, auto_id='id_%s', prefix=None, initial=None, error_class=ErrorList,
@@ -38,22 +38,12 @@ class ExistingListItemForm(forms.ModelForm):
                          use_required_attribute)
         self.instance.list = for_list
 
+    def save(self, commit=True):
+        return forms.models.ModelForm.save(self, commit)
+
     def validate_unique(self):
         try:
             self.instance.validate_unique()
         except ValidationError as e:
             e.error_dict = {'text': [DUPLICATE_ITEM_ERROR]}
             self._update_errors(e)
-
-    class Meta:
-        model = Item
-        fields = ('text',)
-        widgets = {
-            'text': forms.TextInput(attrs={
-                'placeholder': 'Enter a to-do item',
-                'class': 'form-control input-lg'
-            })
-        }
-        error_messages = {
-            'text': {'required': EMPTY_ITEM_ERROR},
-        }

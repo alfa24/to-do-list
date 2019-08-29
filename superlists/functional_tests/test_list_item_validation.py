@@ -1,6 +1,7 @@
 from selenium.webdriver.common.keys import Keys
 
 from functional_tests.base import FunctionalTest
+from lists.forms import DUPLICATE_ITEM_ERROR
 
 MAX_WAIT = 10
 
@@ -54,7 +55,7 @@ class ItemValidationTest(FunctionalTest):
         self.get_item_input_box().send_keys(Keys.ENTER)
 
         # Она видит сообщение об ошибке
-        self.wait_for(lambda: self.assertEqual(
-            self.browser.find_element_by_css_selector('.has-error').text,
-            "Такой элемент уже присутствует в списке"
+        self.wait_for(lambda: self.assertIn(
+            DUPLICATE_ITEM_ERROR,
+            self.browser.find_element_by_css_selector('.has-error').text
         ))
