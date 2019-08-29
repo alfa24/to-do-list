@@ -1,4 +1,5 @@
 from django.core.exceptions import ValidationError
+from django.db import IntegrityError
 from django.test import TestCase
 
 from lists.models import Item, List
@@ -49,9 +50,9 @@ class ItemModelTest(TestCase):
         list_ = List.objects.create()
         Item.objects.create(list=list_, text='new item')
 
-        with self.assertRaises(ValidationError):
+        with self.assertRaises(IntegrityError):
             item = Item(list=list_, text='new item')
-            item.full_clean()
+            item.save()
 
     def test_can_save_same_item_to_different_list(self):
         """test: одинаковый элемент можно сохранить в разные списки"""
