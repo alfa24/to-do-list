@@ -21,12 +21,12 @@
 
 
     QUnit.test("ошибка отображается до нажатия клавиши", function (assert) {
-        initialize();
+        window.Superlists.initialize();
         assert.equal($('.has-error').is(':visible'), true);
     });
 
     QUnit.test("ошибка скрывается при нажатии клавиши", function (assert) {
-        initialize();
+        window.Superlists.initialize();
         $('input[type="text"]').trigger('keypress');
         assert.equal($('.has-error').is(':visible'), false);
     });
