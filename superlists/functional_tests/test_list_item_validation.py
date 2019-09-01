@@ -68,6 +68,9 @@ class ItemValidationTest(FunctionalTest):
     def test_error_messages_are_cleared_on_input(self):
         """test: сообщения об ошибках очищаются при вводе"""
 
+        # Эдит открывает страницу
+        self.browser.get(self.live_server_url)
+
         # Эдит начинает новый список и вызывает ошибку валидации
         self.get_item_input_box().send_keys('Купить молока')
         self.get_item_input_box().send_keys(Keys.ENTER)

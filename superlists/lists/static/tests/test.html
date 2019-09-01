@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Javascript tests</title>
+    <link rel="stylesheet" href="qunit-2.9.2.css">
+</head>
+<body>
+<div id="qunit-fixture">
+    <form>
+        <input type="text"/>
+        <div class="has-error">error</div>
+    </form>
+</div>
+<div id="qunit"></div>
+<script src="../jquery-3.4.1.js"></script>
+<script src="../list.js"></script>
+<script src="qunit-2.9.2.js"></script>
+<script>
+
+
+    QUnit.test("ошибка отображается до нажатия клавиши", function (assert) {
+        initialize();
+        assert.equal($('.has-error').is(':visible'), true);
+    });
+
+    QUnit.test("ошибка скрывается при нажатии клавиши", function (assert) {
+        initialize();
+        $('input[type="text"]').trigger('keypress');
+        assert.equal($('.has-error').is(':visible'), false);
+    });
+</script>
+</body>
+</html>
