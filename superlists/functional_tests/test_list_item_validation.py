@@ -9,6 +9,11 @@ MAX_WAIT = 10
 class ItemValidationTest(FunctionalTest):
     """тест валидации элемента списка"""
 
+    def get_error_element(self):
+        """получить элемент с ошибкой"""
+
+        return self.browser.find_element_by_css_selector('.has-error')
+
     def test_cannot_add_empty_list_items(self):
         """тест: нельзя добавлять пустые элементы списка"""
 
@@ -57,5 +62,27 @@ class ItemValidationTest(FunctionalTest):
         # Она видит сообщение об ошибке
         self.wait_for(lambda: self.assertIn(
             DUPLICATE_ITEM_ERROR,
-            self.browser.find_element_by_css_selector('.has-error').text
+            self.get_error_element().text
+        ))
+
+    def test_error_messages_are_cleared_on_input(self):
+        """test: сообщения об ошибках очищаются при вводе"""
+
+        # Эдит начинает новый список и вызывает ошибку валидации
+        self.get_item_input_box().send_keys('Купить молока')
+        self.get_item_input_box().send_keys(Keys.ENTER)
+        self.wait_for_row_in_list_table('1: Купить молока')
+        self.get_item_input_box().send_keys('Купить молока')
+        self.get_item_input_box().send_keys(Keys.ENTER)
+
+        self.wait_for(lambda: self.assertTrue(
+            self.get_error_element().is_displayed()
+        ))
+
+        # Она начинает набиравть в поле ввода, чтобы исправить ошибку
+        self.get_item_input_box().send_keys('а')
+
+        # Она довольна что исчезает сообщение об ошибке
+        self.wait_for(lambda: self.assertFalse(
+            self.get_error_element().is_displayed()
         ))
