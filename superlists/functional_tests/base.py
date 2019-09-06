@@ -8,8 +8,32 @@ from selenium.common.exceptions import WebDriverException
 MAX_WAIT = 10
 
 
+def wait(fn):
+    """декоратор для явного ожидания работы функции"""
+
+    def modified_fn(*args, **kwargs):
+        start_time = time.time()
+        while True:
+            try:
+                # поппытка выполнить функцию
+                return fn(*args, **kwargs)
+
+            # если ошибка сравнения или ошибка браузера
+            except (AssertionError, WebDriverException) as e:
+
+                # если превышен таймаут, то ошибка
+                if time.time() - start_time > MAX_WAIT:
+                    raise e
+
+                # если таймаут не вышел, то попробуем выполнить еще разок
+                time.sleep(0.5)
+
+    return modified_fn
+
+
 class FunctionalTest(StaticLiveServerTestCase):
     """функциональный тест"""
+
     # todo Почистить функции wait for
     def setUp(self) -> None:
         self.browser = webdriver.Chrome()
@@ -34,17 +58,10 @@ class FunctionalTest(StaticLiveServerTestCase):
                     raise e
                 time.sleep(0.5)
 
+    @wait
     def wait_for(self, fn):
         """ожидать"""
-
-        start_time = time.time()
-        while True:
-            try:
-                return fn()
-            except (AssertionError, WebDriverException) as e:
-                if time.time() - start_time > MAX_WAIT:
-                    raise e
-                time.sleep(0.5)
+        return fn
 
     def get_item_input_box(self):
         """получить поле вводя для элемента"""
@@ -68,4 +85,3 @@ class FunctionalTest(StaticLiveServerTestCase):
         )
         navbar = self.browser.find_element_by_css_selector('.navbar')
         self.assertNotIn(email, navbar.text)
-
