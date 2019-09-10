@@ -37,7 +37,7 @@ def _get_latest_source(source_folder):
     run(f'mkdir -p {source_folder}')
 
     if exists(source_folder + '/.git'):
-        run(f'cd {source_folder} && git fetch && git pull')
+        run(f'cd {source_folder} && git fetch && git reset --hard origin/master')
     else:
         run(f'git clone {REPO_URL} {source_folder}')
         current_commit = local('git log -n 1 --format=%H', capture=True)
