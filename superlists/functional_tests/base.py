@@ -36,10 +36,10 @@ class FunctionalTest(StaticLiveServerTestCase):
 
     # todo Почистить функции wait for
     def setUp(self) -> None:
-        self.browser = webdriver.Chrome()
-        staging_server = os.environ.get('STAGING_SERVER')
-        if staging_server:
-            self.live_server_url = f'http://{staging_server}'
+        self.browser = webdriver.Chrome('/usr/bin/chromedriver')
+        self.staging_server = os.environ.get('STAGING_SERVER')
+        if self.staging_server:
+            self.live_server_url = f'http://{self.staging_server}'
 
     def tearDown(self) -> None:
         self.browser.quit()
