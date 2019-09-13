@@ -62,7 +62,7 @@ class NewVisitorTest(FunctionalTest):
         # Теперь новый пользователь Френсис приходит на сайт
         # # перезапускаем браузер, чтобы очистить cookie
         self.browser.quit()
-        self.browser = webdriver.Chrome()
+        self.browser = webdriver.Chrome('/usr/bin/chromedriver')
 
         # Френсис посещает главную страницу. Нет никаких признаков присутствия списков Эдит
         self.browser.get(self.live_server_url)
