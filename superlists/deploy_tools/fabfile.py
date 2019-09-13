@@ -1,3 +1,5 @@
+import os
+
 from fabric.contrib.files import append, exists, sed
 from fabric.api import env, local, run
 import random
@@ -5,7 +7,7 @@ import random
 REPO_URL = 'https://github.com/alfa24/to-do-list.git'
 HOST = env.host
 USER = env.user
-EMAIL_PASSWORD_YANDEX = env.EMAIL_PASSWORD
+EMAIL_PASSWORD = os.environ.get('EMAIL_PASSWORD')
 
 
 def deploy():
@@ -89,7 +91,7 @@ def _configure_gunicorn_service(source_folder):
 
     sed(gunicorn_conf_service, "SITENAME", env.host, use_sudo=True)
     sed(gunicorn_conf_service, "USERNAME", env.user, use_sudo=True)
-    sed(gunicorn_conf_service, "EMAIL_PASSWORD_YANDEX", env.EMAIL_PASSWORD, use_sudo=True)
+    sed(gunicorn_conf_service, "EMAIL_PASSWORD_YANDEX", EMAIL_PASSWORD, use_sudo=True)
 
     run(f'sudo systemctl daemon-reload && '
         f'sudo systemctl enable {env.host} && '
