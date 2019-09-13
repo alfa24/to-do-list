@@ -5,6 +5,7 @@ Description=Gunicorn server for SITENAME
 Restart=on-failure
 User=USERNAME
 WorkingDirectory=/home/USERNAME/sites/SITENAME/source/superlists
+Environment=EMAIL_PASSWORD=EMAIL_PASSWORD_YANDEX
 ExecStart=/home/USERNAME/sites/SITENAME/virtualenv/bin/gunicorn \
 --bind unix:/tmp/SITENAME.socket \
 --capture-output \
