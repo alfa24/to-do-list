@@ -24,9 +24,7 @@ class LayoutAndStylingTest(FunctionalTest):
         )
 
         # она начинает новый список и видит что поле там тоже центрировано
-        inputbox.send_keys('Купить молоко')
-        inputbox.send_keys(Keys.ENTER)
-        self.wait_for_row_in_list_table('1: Купить молоко')
+        self.add_list_item('Купить молока')
         inputbox = self.get_item_input_box()
         self.assertAlmostEqual(
             inputbox.location['x'] + inputbox.size['width'] / 2,

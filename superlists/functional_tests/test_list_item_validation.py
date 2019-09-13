@@ -28,9 +28,7 @@ class ItemValidationTest(FunctionalTest):
 
         # Она пробует снова, теперь с неким текстом для элемента, и теперь
         # это срабатывает
-        self.get_item_input_box().send_keys('Купить молока')
-        self.get_item_input_box().send_keys(Keys.ENTER)
-        self.wait_for_row_in_list_table('1: Купить молока')
+        self.add_list_item('Купить молока')
 
         # Как ни странно, Эдит решает отправить второй пустой элемент списка
         # Она получает аналогичное предупреждение на странице списка
@@ -51,9 +49,7 @@ class ItemValidationTest(FunctionalTest):
         self.browser.get(self.live_server_url)
 
         # И начинает новый список
-        self.get_item_input_box().send_keys('Купить молока')
-        self.get_item_input_box().send_keys(Keys.ENTER)
-        self.wait_for_row_in_list_table('1: Купить молока')
+        self.add_list_item('Купить молока')
 
         # Она случайно пытается завести одинаковый элемент
         self.get_item_input_box().send_keys('Купить молока')
@@ -72,9 +68,8 @@ class ItemValidationTest(FunctionalTest):
         self.browser.get(self.live_server_url)
 
         # Эдит начинает новый список и вызывает ошибку валидации
-        self.get_item_input_box().send_keys('Купить молока')
-        self.get_item_input_box().send_keys(Keys.ENTER)
-        self.wait_for_row_in_list_table('1: Купить молока')
+        self.add_list_item('Купить молока')
+
         self.get_item_input_box().send_keys('Купить молока')
         self.get_item_input_box().send_keys(Keys.ENTER)
 

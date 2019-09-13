@@ -4,6 +4,8 @@ import time
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
+from selenium.webdriver.common.keys import Keys
+
 from .server_tools import reset_database
 
 MAX_WAIT = 10
@@ -87,3 +89,13 @@ class FunctionalTest(StaticLiveServerTestCase):
         )
         navbar = self.browser.find_element_by_css_selector('.navbar')
         self.assertNotIn(email, navbar.text)
+
+    def add_list_item(self, item_text):
+        """Добавить элемент списка"""
+
+        num_rows = len(self.browser.find_elements_by_css_selector('#id_list_table tr'))
+        inputbox = self.get_item_input_box()
+        inputbox.send_keys(item_text)
+        inputbox.send_keys(Keys.ENTER)
+        item_number = num_rows + 1
+        self.wait_for_row_in_list_table(f'{item_number}: {item_text}')
