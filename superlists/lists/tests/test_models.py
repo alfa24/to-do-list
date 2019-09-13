@@ -28,6 +28,14 @@ class ListModelTest(TestCase):
 
         List.objects.create()  # не должно вызывать исключение
 
+    def test_list_name_is_first_item_text(self):
+        """тест: имя теста является первым элементом"""
+
+        list_ = List.objects.create()
+        Item.objects.create(list=list_, text='Первая запись')
+        Item.objects.create(list=list_, text='Вторая запись')
+        self.assertEqual(list_.name, 'Первая запись')
+
 
 class ItemModelTest(TestCase):
     """тест модели элемента списка"""
