@@ -5,7 +5,7 @@ from fabric.context_managers import settings
 def _get_manage_dot_py(host):
     """получить manage.py"""
 
-    return f'~/sites/{host}/source/virtualenv/bin/python ~/sites/{host}/source/superlists/manage.py'
+    return f'~/sites/{host}/virtualenv/bin/python ~/sites/{host}/source/superlists/manage.py'
 
 
 def reset_database(host):
