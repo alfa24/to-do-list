@@ -2,7 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.forms.utils import ErrorList
 
-from lists.models import Item
+from lists.models import Item, List
 
 EMPTY_ITEM_ERROR = 'Элементы списка не должны быть пустыми'
 DUPLICATE_ITEM_ERROR = 'Такой элемент уже присутствует в списке'
@@ -10,10 +10,6 @@ DUPLICATE_ITEM_ERROR = 'Такой элемент уже присутствуе�
 
 class ItemForm(forms.ModelForm):
     """форма для эелемента списка"""
-
-    def save(self, for_list, commit=True):
-        self.instance.list = for_list
-        return super().save(commit)
 
     class Meta:
         model = Item
@@ -38,12 +34,19 @@ class ExistingListItemForm(ItemForm):
                          use_required_attribute)
         self.instance.list = for_list
 
-    def save(self, commit=True):
-        return forms.models.ModelForm.save(self, commit)
-
     def validate_unique(self):
         try:
             self.instance.validate_unique()
         except ValidationError as e:
             e.error_dict = {'text': [DUPLICATE_ITEM_ERROR]}
             self._update_errors(e)
+
+
+class NewListForm(ItemForm):
+    """форма нового списка"""
+
+    def save(self, owner):
+        if owner.is_authenticated:
+            return List.create_new(first_item_text=self.cleaned_data['text'], owner=owner)
+        else:
+            return List.create_new(first_item_text=self.cleaned_data['text'])
