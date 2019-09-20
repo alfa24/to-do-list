@@ -1,12 +1,16 @@
 import os
 import time
 
+from django.conf import settings
+
+from functional_tests.management.commands.create_session import create_pre_authenticated_session
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
 
 from .server_tools import reset_database
+from .server_tools import create_session_on_server
 
 MAX_WAIT = 10
 
@@ -37,9 +41,29 @@ def wait(fn):
 class FunctionalTest(StaticLiveServerTestCase):
     """функциональный тест"""
 
+    def make_browser(self):
+        return webdriver.Chrome('/usr/bin/chromedriver')
+
+    def create_pre_authenticated_session(self, email):
+        """создать предварительно аутентифицированный сеанс"""
+
+        if self.staging_server:
+            session_key = create_session_on_server(self.staging_server, email)
+        else:
+            session_key = create_pre_authenticated_session(email)
+
+        # # установить cookie, которые нужны для первого посещения домена.
+        # # страницы 404 загружаются быстрее всего!
+        self.browser.get(self.live_server_url + "/404_no_such_url/")
+        self.browser.add_cookie(dict(
+            name=settings.SESSION_COOKIE_NAME,
+            value=session_key,
+            path='/',
+        ))
+
     # todo Почистить функции wait for
     def setUp(self) -> None:
-        self.browser = webdriver.Chrome('/usr/bin/chromedriver')
+        self.browser = self.make_browser()
         self.staging_server = os.environ.get('STAGING_SERVER')
         if self.staging_server:
             self.live_server_url = f'http://{self.staging_server}'
