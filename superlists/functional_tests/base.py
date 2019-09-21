@@ -61,7 +61,6 @@ class FunctionalTest(StaticLiveServerTestCase):
             path='/',
         ))
 
-    # todo Почистить функции wait for
     def setUp(self) -> None:
         self.browser = self.make_browser()
         self.staging_server = os.environ.get('STAGING_SERVER')
