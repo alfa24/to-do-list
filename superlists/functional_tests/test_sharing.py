@@ -50,7 +50,7 @@ class SharingTest(FunctionalTest):
         MyListsPage(self).go_to_my_lists_page()
 
         # Он видит на ней список Эдит!
-        self.browser.find_element_by_link_text('Get help').click()
+        self.browser.find_element_by_link_text('Требуется помощь').click()
 
         # На странице, которую Анцифер видит, говорится, что это список Эдит
         self.wait_for(lambda: self.assertEqual(

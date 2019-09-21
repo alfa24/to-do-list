@@ -1,3 +1,6 @@
+import time
+
+
 class MyListsPage(object):
 
     def __init__(self, test):
@@ -12,4 +15,5 @@ class MyListsPage(object):
             self.test.browser.find_element_by_tag_name('h1').text,
             'Мои списки'
         ))
+        time.sleep(10)
         return self

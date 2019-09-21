@@ -292,3 +292,26 @@ class MyListsTest(TestCase):
         correct_user = User.objects.create(email="correct_user@mail.com")
         response = self.client.get('/lists/users/correct_user@mail.com/')
         self.assertEqual(response.context['owner'], correct_user)
+
+
+class ShareListTest(TestCase):
+    """тест расшаривания списков"""
+
+    def test_post_redirects_to_list_page(self):
+        """test: POST запрос переадресуется на страницу списка"""
+
+        list_ = List.create_new("Купитьс чая")
+        response = self.client.post(f"/lists/{list_.id}/share")
+        self.assertRedirects(response, f'/lists/{list_.id}/')
+
+    def test_email_save_in_share_with(self):
+        """test: емаил сохраняется в списке "поделился c"""
+
+        friend = User.objects.create(email="friend_mail@mail.com")
+        list_ = List.create_new("Купитьс чая")
+        self.client.post(f"/lists/{list_.id}/share", data={"sharee": friend.email})
+        self.assertIn(friend, list_.shared_with.all())
+        print(friend.available_lists.all(), list_.shared_with.all())
+
+        
+        

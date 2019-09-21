@@ -9,6 +9,7 @@ class List(models.Model):
     """модель списка"""
 
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True)
+    shared_with = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="available_lists")
 
     @property
     def name(self):
