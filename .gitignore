@@ -6,3 +6,4 @@ __pycashe__
 *.pyc
 todo.txt
 /static/
+/.gtm/
